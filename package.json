@@ -1,0 +1,24 @@
+{
+  "name": "gf-loader",
+  "version": "1.0.0",
+  "description": "Unofficial library to manage and load Google Fonts.",
+  "main": "gf-loader.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ezaca/gf-loader.git"
+  },
+  "keywords": [
+    "google",
+    "fonts",
+    "api",
+    "javascript",
+    "browser"
+  ],
+  "author": "Eliakim Zacarias",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ezaca/gf-loader/issues"
+  },
+  "homepage": "https://github.com/ezaca/gf-loader#README.MD"
+}
