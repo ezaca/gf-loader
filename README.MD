@@ -11,7 +11,7 @@ preserve the copyright notice, as required by MIT License.
 
 # Methods
 
-`GFLoader.append(family): Promise`
+## `GFLoader.append(family): Promise`
 
 Appends a font CSS given its family. If you want to load the default font style
 (weight 400, latin), just pass the font name to this function. The "family"
@@ -24,7 +24,7 @@ argument also accepts an object with the fields:
 The function returns a Promise object and you can define its callback calling
 the functions `.then(callback)` or `.catch(callback)`.
 
-`GFLoader.exists(family): Promise`
+## `GFLoader.exists(family): Promise`
 
 Detect whether the font family exists or not. This function makes a HEAD request
 in the Google Fonts server and watch its result. If it returns 200 OK, the font
@@ -41,7 +41,7 @@ font family. This occurs because both cases returns an invalid error with status
 the error page and converts the status to 0. This status is ambiguous with other
 possible errors.
 
-`GFLoader.info(family): Promise`
+## `GFLoader.info(family): Promise`
 
 Returns some useful informations about the font family. When the execution goes
 well, the first argument passed to the callback function of `.then(callback)` is
@@ -53,7 +53,7 @@ be normal and/or italic. Each weight is an object with the fields `normal` and
 item is a field of the `subset` object, whose field name is the subset and the
 field value is always `true`.
 
-`GFLoader.stylize(element, family, fallback='sans-serif'): Promise`
+## `GFLoader.stylize(element, family, fallback='sans-serif'): Promise`
 
 Load the font CSS, if necessary, and set the inline `style` attribute on the
 given element, adjusting its `font-family` and `font-weight`.
