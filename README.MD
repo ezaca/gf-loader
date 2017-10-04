@@ -41,6 +41,19 @@ font family. This occurs because both cases returns an invalid error with status
 the error page and converts the status to 0. This status is ambiguous with other
 possible errors.
 
+`GFLoader.exists_weight(family, weight): Promise`
+
+This function is very like the `exists` function, but also accept an extra
+argument to test against a specific font weight.
+
+Argument `weight` accepts the font weight as string or number. It also can be an
+array with strings and numbers representing the desired font weights. If the
+argument is an array, it will return true whether any of the weights exist.
+
+The function returns a Promise to handle its result.
+
+See `exists` function for further information.
+
 `GFLoader.info(family): Promise`
 
 Returns some useful informations about the font family. When the execution goes

@@ -1,6 +1,6 @@
 {
   "name": "gf-loader",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Unofficial library to manage and load Google Fonts.",
   "main": "gf-loader.js",
   "scripts": {},

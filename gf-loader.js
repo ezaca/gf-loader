@@ -21,6 +21,18 @@
  * SOFTWARE.
  *
  */
+
+/**
+ * This library allow to check and retrieve fonts from Google Fonts. It appends
+ * <link> elements to the page <head> section to allow the usage of fonts on
+ * programmatic demand.
+ *
+ * Notes:
+ *   - There are no mechanisms to prevent forgery of invalid URL. If you want
+ *     this mechanism you must filter the values of family, weight and subset
+ *     before sending to these functions.
+ */
+
 (function(){
     /**
      * We need jQuery to get $.get function for Ajax and other shorthands to
@@ -72,6 +84,12 @@
      * Note this function is unable to diff from invalid font and network failure
      * because of the way Google manage errors. Its error page causes a cross-site
      * exception which turns into status 0, and network connection are also status 0.
+     *
+     * Note:
+     * If the cross-origin behavior is modified, the `then` callback for $.ajax
+     * and $.get must be updated to verify the 200 OK response status. For now
+     * it is trivial, once the page is not loaded and a successful load of a page
+     * with status 400 Bad Request will never occur.
      * 
      * @param  {String} family  The font name.
      * @return {Promise}        The promise of result.
@@ -82,6 +100,30 @@
             return create_promise(function(resolve){ resolve(true) })
         return create_promise(function(resolve, reject){
             $.ajax(FontsGoogleApis+encodeURIComponent(family),{method:'HEAD'})
+            .then(resolve)
+            .catch(reject)
+        })
+    }
+
+    /**
+     * Check if the font weight exists for the given family. Like `exists`, this
+     * function makes a HEAD request. This function is under the same conditions
+     * as `exists`. Consider it an updated version of that.
+     * 
+     * @param  {String}              family  The font family name.
+     * @param  {String|Number|Array} weight  The number or string of the desired weight. Can be an array of strings.
+     * @return {Promise} The promise of result.
+     */
+    function exists_weight_function(family, weight){
+        var it = this
+        var w = weight
+        if (w instanceof Array)
+            w = weight.join(',')
+        var url = FontsGoogleApis+encodeURIComponent(family)+':'+w
+        if (it.$loaded[family] && (it.$loaded[family].w.indexOf(weight) >= 0))
+            return create_promise(function(resolve){ resolve(true) })
+        return create_promise(function(resolve, reject){
+            $.ajax(url,{method:'HEAD'})
             .then(resolve)
             .catch(reject)
         })
@@ -302,6 +344,7 @@
         '$loaded': {},
         'append': append_function,
         'exists': exists_function,
+        'exists_weight': exists_weight_function,
         'info': info_function,
         'stylize': stylize_function,
     }
