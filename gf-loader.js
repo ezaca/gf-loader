@@ -286,7 +286,6 @@
     function info_function(family){
         var it = this
         var url = FontsGoogleApis+encodeURIComponent(family)+':100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i'
-        console.log('URL',url)
         return create_promise(function(resolve, reject){
             $.get(url)
             .then(function(data, ...dontCare){
