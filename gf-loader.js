@@ -141,8 +141,8 @@
     function ArrayHasItems(target,search){
         var v,insect=[]
         for(v of search)
-            if(target.indexOf(v) < 0)
-                insect.push(v)
+            if(target.indexOf(String(v)) < 0)
+                insect.push(String(v))
         return insect
     }
 
@@ -156,8 +156,8 @@
      */
     function ArraySetItems(arrayAsSet, added){
         for(var v of added)
-            if(arrayAsSet.indexOf(v)<0)
-                arrayAsSet.push(v)
+            if(arrayAsSet.indexOf(String(v))<0)
+                arrayAsSet.push(String(v))
     }
 
     /**
