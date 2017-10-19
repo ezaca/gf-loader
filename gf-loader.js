@@ -240,7 +240,12 @@
         var hasWeights = hasLoaded && ! ArrayHasItems(it.$loaded[familyname].w, weights).length
         var hasSubset = hasLoaded && ! ArrayHasItems(it.$loaded[familyname].cs, subset).length
         if(hasLoaded && hasWeights && hasSubset)
-            return create_promise(function(resolve){ resolve(true) })
+        {
+            return create_promise(function(resolve){ resolve({
+                'weight':it.$loaded[familyname].w,
+                'subset':it.$loaded[familyname].cs
+            },true) })
+        }
 
         return create_promise(function(resolve, reject){
             var urifamily = encodeURIComponent(familyname)
