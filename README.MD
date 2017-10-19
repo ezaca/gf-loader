@@ -24,6 +24,11 @@ argument also accepts an object with the fields:
 The function returns a Promise object and you can define its callback calling
 the functions `.then(callback)` or `.catch(callback)`.
 
+The `.then(callback)`'s first argument contains some useful information for the
+current query, that matches the style of `GFLoader.info`. The argument contains
+an object with `weight` (Array) and `subset` (Array) filled with the items actually
+retrieved from the font server.
+
 ## `GFLoader.exists(family): Promise`
 
 Detect whether the font family exists or not. This function makes a HEAD request

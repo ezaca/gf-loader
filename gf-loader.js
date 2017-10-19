@@ -160,6 +160,45 @@
                 arrayAsSet.push(String(v))
     }
 
+    function parseStylesheet(data){
+        var result = {'weight':{}, 'subset':{}}
+        var css = String(data)
+        var r,rgx
+        //
+        // This code captures the following format (example):
+        //      font-style: normal;
+        //      font-weight: 400;
+        // In the example above, we set the weight 400 with the "normal"
+        // field as "true".
+        rgx = /font-style\s*:\s*normal;\s*font-weight\s*:\s*([^;}]+)/gi
+        while(r=rgx.exec(css))
+            if(result.weight[r[1]])
+                result.weight[r[1]].normal=true
+            else
+                result.weight[r[1]]={normal:true,italic:false}
+        //
+        // Like code above, but captures the following format (example):
+        //      font-style: italic;
+        //      font-weight: 400;
+        // In the example above, we set the weight 400 with the "italic"
+        // field as "true".
+        rgx = /font-style\s*:\s*italic;\s*font-weight\s*:\s*([^;}]+)/gi
+        while(r=rgx.exec(css))
+            if(result.weight[r[1]])
+                result.weight[r[1]].italic=true
+            else
+                result.weight[r[1]]={normal:false,italic:true}
+        //
+        // Get the subsets that follows like (example):
+        //      /* latin */
+        // In the example above, we set the subset with the "latin"
+        // field as "true"
+        rgx = /\/\*\s*(\S+)\s*\*\//gi
+        while(r=rgx.exec(css))
+            result.subset[r[1]] = true
+        return result;
+    }
+
     /**
      * Entry method. This method of the library's main object allows to append
      * a new <link> with a new font family to the <head> section of the website.
@@ -220,7 +259,7 @@
                 +(uriweights.length?':'+uriweights.join(','):'')
                 +(uricharset.length?'&subset='+uricharset.join(','):'')
             $.get(url)
-            .then(function(...dontCare){
+            .then(function(data,...dontCare){
                 // Update the fonts, weights and subset already loaded, append
                 // or update the <link> element and resolve the Promise.
                 var link = (hasLoaded && it.$loaded[familyname].link) || $('<link rel="stylesheet" type="text/css">')
@@ -233,7 +272,8 @@
                 subset.push('latin')
                 ArraySetItems(it.$loaded[familyname].cs, subset)
                 it.$loaded[familyname].link = link
-                resolve(...dontCare)
+                var info = parseStylesheet(data)
+                resolve(info, data, ...dontCare)
             })
             .catch(reject)
         })
@@ -291,41 +331,7 @@
             .then(function(data, ...dontCare){
                 if(data === true)
                     return resolve(null, data,...dontCare)
-                var result = {'weight':{}, subset:{}}
-                var css = String(data)
-                var r,rgx
-                //
-                // This code captures the following format (example):
-                //      font-style: normal;
-                //      font-weight: 400;
-                // In the example above, we set the weight 400 with the "normal"
-                // field as "true".
-                rgx = /font-style\s*:\s*normal;\s*font-weight\s*:\s*([^;}]+)/gi
-                while(r=rgx.exec(css))
-                    if(result.weight[r[1]])
-                        result.weight[r[1]].normal=true
-                    else
-                        result.weight[r[1]]={normal:true,italic:false}
-                //
-                // Like code above, but captures the following format (example):
-                //      font-style: italic;
-                //      font-weight: 400;
-                // In the example above, we set the weight 400 with the "italic"
-                // field as "true".
-                rgx = /font-style\s*:\s*italic;\s*font-weight\s*:\s*([^;}]+)/gi
-                while(r=rgx.exec(css))
-                    if(result.weight[r[1]])
-                        result.weight[r[1]].italic=true
-                    else
-                        result.weight[r[1]]={normal:false,italic:true}
-                //
-                // Get the subsets that follows like (example):
-                //      /* latin */
-                // In the example above, we set the subset with the "latin"
-                // field as "true"
-                rgx = /\/\*\s*(\S+)\s*\*\//gi
-                while(r=rgx.exec(css))
-                    result.subset[r[1]] = true
+                var result = parseStylesheet(data)
                 // We are done!
                 resolve(result, data, ...dontCare)
             })
