@@ -237,15 +237,15 @@
 
         // Should we continue or it was already loaded before?
         var hasLoaded = !! it.$loaded[familyname]
-        var hasWeights = hasLoaded && ! ArrayHasItems(it.$loaded[familyname].w, weights).length
-        var hasSubset = hasLoaded && ! ArrayHasItems(it.$loaded[familyname].cs, subset).length
-        if(hasLoaded && hasWeights && hasSubset)
-        {
-            return create_promise(function(resolve){ resolve({
-                'weight':it.$loaded[familyname].w,
-                'subset':it.$loaded[familyname].cs
-            },true) })
-        }
+        // var hasWeights = hasLoaded && ! ArrayHasItems(it.$loaded[familyname].w, weights).length
+        // var hasSubset = hasLoaded && ! ArrayHasItems(it.$loaded[familyname].cs, subset).length
+        // if(hasLoaded && hasWeights && hasSubset)
+        // {
+        //     return create_promise(function(resolve){ resolve({
+        //         'weight':it.$loaded[familyname].w,
+        //         'subset':it.$loaded[familyname].cs
+        //     },true) })
+        // }
 
         return create_promise(function(resolve, reject){
             var urifamily = encodeURIComponent(familyname)
@@ -272,7 +272,7 @@
                 $('head').append(link)
                 it.$loaded[familyname] = it.$loaded[familyname] || {'w':[],'cs':['latin'],'link':null}
                 if(! uriweights.length)
-                    it.$loaded[familyname].w.push(400)
+                    it.$loaded[familyname].w.push('400')
                 ArraySetItems(it.$loaded[familyname].w, weights)
                 subset.push('latin')
                 ArraySetItems(it.$loaded[familyname].cs, subset)
@@ -298,7 +298,7 @@
         var el = $(element)
         if(typeof family==='string'){
             cssfamily = family+','+fallback
-            cssweight = 400
+            cssweight = '400'
         } else
         {
             cssfamily = family.family+','+fallback
